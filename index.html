@@ -1,222 +1,310 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>خاص بحبيبتي</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>القرآن الكريم</title>
 <style>
-  /* ===== RESET ===== */
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+:root{
+    --bg: #000;
+    --card: #222;
+    --card-hover: #444;
+    --gold: #FFD700;
+    --text: #fff;
+}
 
-  html, body {
-    overflow: hidden; /* منع scrollbar نهائيًا */
-    height: 100%;
-  }
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family: Arial, sans-serif;
+    text-align:center;
+}
 
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background: linear-gradient(135deg, #080808, #1a1a1a, #050505);
-    font-family: 'Arial', sans-serif;
-    color: #fff;
-    position: relative;
-  }
+.container{
+    max-width:700px;
+    margin:0 auto;
+    padding:15px;
+}
 
-  .main-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    max-width: 450px;
-    z-index: 2;
-  }
+header{
+    margin-bottom:15px;
+}
+h1{
+    margin:6px 0;
+    color:var(--gold);
+    font-size:2rem;
+}
+.lead{opacity:0.9; margin-bottom:15px;}
 
-  /* ===== HEART ===== */
-  .heart-container {
-    position: relative;
-    width: 180px;
-    height: 180px;
-  }
+#backBtn{
+    display:none;
+    background:var(--card);
+    color:var(--gold);
+    border:1px solid var(--gold);
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    margin-bottom:15px;
+    transition:0.2s;
+}
+#backBtn:hover{ background:var(--card-hover); }
 
-  .heart {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ff2d55;
-    transform: rotate(-45deg);
-    border-radius: 20px;
-    animation: heartPulse 1.6s infinite ease-in-out;
-    z-index: 2;
-  }
+.sheik-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin:10px auto 25px auto;
+    align-items:center;
+}
+.sheik{
+    background-color: var(--card);
+    border:1px solid var(--gold);
+    border-radius:10px;
+    width:100%;
+    cursor:pointer;
+    padding:10px 0;
+    transition:transform 0.2s, background-color 0.3s;
+    font-size:1.1rem;
+    color:var(--gold);
+}
+.sheik:hover{ background-color: var(--card-hover); transform:translateY(-2px); }
 
-  .heart::before,
-  .heart::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ff2d55;
-    border-radius: 50%;
-  }
-  .heart::before { top: -50%; left: 0; }
-  .heart::after  { left: 50%; top: 0; }
+h2.section-title{
+    margin-top:20px;
+    color:var(--gold);
+    font-size:1.3rem;
+    border-bottom:1px solid var(--gold);
+    display:inline-block;
+    padding-bottom:4px;
+}
 
-  .letter {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 70px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 0 0 15px #ffffff, 0 0 30px #ff2d55;
-    z-index: 3;
-    animation: letterGlow 1.5s infinite alternate;
-  }
+.surah{
+    background:var(--card);
+    border:1px solid var(--gold);
+    margin:8px auto;
+    padding:10px 12px;
+    width:100%;
+    cursor:pointer;
+    transition:background 0.18s, transform 0.08s;
+    border-radius:6px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+}
+.surah:hover{ background:var(--card-hover); transform:translateY(-1px); }
 
-  /* ===== بيت الشعر ===== */
-  .text {
-    text-align: center;
-    font-size: 18px;
-    line-height: 1.6;
-    margin-top: 40px;
-    color: #ffffff;
-    opacity: 0;
-    max-width: 100%;
-    background: rgba(0,0,0,0.3);
-    padding: 15px 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(255,45,85,0.3);
-    animation: none;
-  }
+.surah .title{ flex:1; text-align:right; font-size:1rem; }
+.surah .num{ min-width:40px; text-align:center; font-weight:bold; color:var(--gold); }
 
-  /* ===== التوقيع ===== */
-  .signature {
-    position: fixed;
-    bottom: 15px;
-    left: 15px;
-    font-size: 16px;
-    color: #fff;
-    text-shadow: 0 0 8px rgba(255,255,255,0.15);
-    z-index: 5;
-  }
+audio{ display:none; margin:6px auto 12px auto; width:100%; }
 
-  /* ===== SMALL FLOATING HEARTS ===== */
-  .small-heart {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #ff2d55;
-    transform: rotate(-45deg);
-    border-radius: 20px;
-    opacity: 0.8;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .small-heart::before,
-  .small-heart::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ff2d55;
-    border-radius: 50%;
-  }
-  .small-heart::before { top: -50%; left: 0; }
-  .small-heart::after  { left: 50%; top: 0; }
-
-  /* ===== ANIMATIONS ===== */
-  @keyframes heartPulse {
-    0% { transform: rotate(-45deg) scale(1); }
-    50% { transform: rotate(-45deg) scale(1.08); }
-    100% { transform: rotate(-45deg) scale(1); }
-  }
-
-  @keyframes letterGlow {
-    0% { text-shadow: 0 0 15px #ffffff, 0 0 30px #ff2d55; }
-    100% { text-shadow: 0 0 25px #ffffff, 0 0 45px #ff2d55; }
-  }
-
-  @keyframes textFadeIn {
-    0% { opacity: 0; transform: translateY(20px); }
-    50% { opacity: 1; transform: translateY(5px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  @media (max-width: 420px) {
-    .heart-container { width: 140px; height: 140px; }
-    .letter { font-size: 50px; }
-    .text { font-size: 16px; margin-top: 30px; padding: 10px 15px; }
-    .signature { font-size: 14px; }
-  }
+/* Media Queries لجعل الموقع متجاوب */
+@media (max-width:768px){
+    h1{ font-size:1.7rem; }
+    h2.section-title{ font-size:1.1rem; }
+    .sheik{ font-size:1rem; padding:8px 0; }
+    .surah .title{ font-size:0.95rem; }
+}
+@media (max-width:480px){
+    h1{ font-size:1.5rem; }
+    h2.section-title{ font-size:1rem; }
+    .sheik{ font-size:0.95rem; padding:6px 0; }
+    .surah .title{ font-size:0.9rem; }
+    .surah .num{ min-width:30px; font-size:0.9rem; }
+}
 </style>
 </head>
 <body>
+<div class="container">
+<header>
+    <h1 id="page-title">اختر القارئ للاستماع للقرآن الكريم</h1>
+    <p class="lead" id="page-lead">اضغط على اسم الشيخ للانتقال لقائمة السور.</p>
+</header>
 
-<div class="main-container">
-  <div class="heart-container">
-    <div class="heart"></div>
-    <div class="letter">H</div>
-  </div>
+<button id="backBtn" onclick="goBack()">رجوع لاختيار الشيخ</button>
 
-  <div class="text" id="poem">
-    يافتن ب الحب قلبي قد ملك
-    هل انت من حوا وادم ام ملك
-    غيني ازا نظره لحسنك سبحه
-    سبحان من خلق الجمال وجملك
-  </div>
+<div id="sheik-sections">
+    <h2 class="section-title">أشهر الشيوخ المصريين</h2>
+    <div id="egypt-sheik" class="sheik-list"></div>
+
+    <h2 class="section-title">أشهر الشيوخ السعوديين</h2>
+    <div id="saudi-sheik" class="sheik-list"></div>
 </div>
 
-<div class="signature">Eng : Eslam Al-Menshawi</div>
+<div id="list"></div>
+</div>
 
 <script>
-  // ===== SMALL FLOATING HEARTS =====
-  function createSmallHeart() {
-    const heart = document.createElement('div');
-    heart.classList.add('small-heart');
-    const size = Math.random() * 10 + 6;
-    heart.style.width = `${size}px`;
-    heart.style.height = `${size}px`;
-    heart.style.left = `${Math.random() * 95}%`; // تجنب تجاوز الشاشة
-    heart.style.bottom = '0px';
-    document.body.appendChild(heart);
-    const duration = Math.random() * 4 + 3;
-    heart.style.transition = `all ${duration}s linear`;
-    setTimeout(() => {
-      heart.style.bottom = `${window.innerHeight}px`;
-      heart.style.opacity = 0;
-    }, 50);
-    setTimeout(() => heart.remove(), duration * 1000);
-  }
-  setInterval(createSmallHeart, 300);
+const sheikData = {
+    egypt:[
+        {id:"abdulbaset", name:"الشيخ عبد الباسط عبد الصمد"},
+        {id:"manshawi", name:"الشيخ محمد صديق المنشاوي"},
+        {id:"hossary", name:"الشيخ محمود خليل الحصري"},
+        {id:"mostafa", name:"الشيخ مصطفى إسماعيل"},
+        {id:"ahmed", name:"الشيخ أحمد عبد الحليم"},
+        {id:"karim", name:"الشيخ كريم مصطفى"},
+        {id:"mohamed", name:"الشيخ محمد جبريل"},
+        {id:"ali_hadifi", name:"الشيخ علي الحذيفي"},
+        {id:"saber", name:"الشيخ محمود صابر"},
+        {id:"mohamed_ismail", name:"الشيخ محمد إسماعيل"},
+        {id:"mohamed_saeed", name:"الشيخ محمد سعيد"},
+        {id:"ahmed_sadek", name:"الشيخ أحمد صديق"},
+        {id:"mohamed_mahmoud", name:"الشيخ محمد محمود"},
+        {id:"yahia", name:"الشيخ يحيى البدوي"},
+        {id:"mustafa_manshawi", name:"الشيخ مصطفى المنشاوي"},
+        {id:"mohamed_ahmed", name:"الشيخ محمد أحمد"},
+        {id:"ali_mostafa", name:"الشيخ علي مصطفى"},
+        {id:"hassan_ali", name:"الشيخ حسن علي"},
+        {id:"sami_ibrahim", name:"الشيخ سامي إبراهيم"},
+        {id:"ahmed_hassan", name:"الشيخ أحمد حسن"}
+    ],
+    saudi:[
+        {id:"yasser", name:"الشيخ ياسر الدوسري"},
+        {id:"khaled", name:"الشيخ خالد الجليل"},
+        {id:"shuraim", name:"الشيخ سعود الشريم"},
+        {id:"maher", name:"الشيخ ماهر المعقلي"},
+        {id:"ayoub", name:"الشيخ محمد أيوب"},
+        {id:"ali_jaber", name:"الشيخ علي جابر"},
+        {id:"abdullah", name:"الشيخ عبدالله الجهني"},
+        {id:"saud", name:"الشيخ سعود الحارثي"},
+        {id:"mohammed", name:"الشيخ محمد العجلان"},
+        {id:"fahad", name:"الشيخ فهد البريك"},
+        {id:"abdullah2", name:"الشيخ عبدالله السلمي"},
+        {id:"ali2", name:"الشيخ علي العريني"},
+        {id:"omar", name:"الشيخ عمر القاضي"},
+        {id:"salman", name:"الشيخ سلمان العودة"},
+        {id:"mohamed_saqr", name:"الشيخ محمد صقر"},
+        {id:"abdullah_zaid", name:"الشيخ عبد الله الزيد"},
+        {id:"abdullah_tayar", name:"الشيخ عبدالله الطيار"},
+        {id:"sulaiman", name:"الشيخ سليمان العلي"},
+        {id:"fahad_ghamdi", name:"الشيخ فهد الغامدي"},
+        {id:"saleh", name:"الشيخ صالح الغامدي"}
+    ]
+};
 
-  // ===== TEXT LETTER-BY-LETTER APPEAR =====
-  const poemText = document.getElementById('poem');
-  let textIndex = 0;
-  const textContent = poemText.innerHTML;
-  poemText.innerHTML = '';
-  function showText() {
-    if (textIndex < textContent.length) {
-      poemText.innerHTML += textContent.charAt(textIndex);
-      textIndex++;
-      setTimeout(showText, 25);
-    } else {
-      poemText.style.animation = "textFadeIn 1s forwards";
-    }
-  }
-  showText();
+const surahs = [
+    ["001","الفاتحة",7],["002","البقرة",286],["003","آل عمران",200],["004","النساء",176],
+    ["005","المائدة",120],["006","الأنعام",165],["007","الأعراف",206],["008","الأنفال",75],
+    ["009","التوبة",129],["010","يونس",109],["011","هود",123],["012","يوسف",111],
+    ["013","الرعد",43],["014","إبراهيم",52],["015","الحجر",99],["016","النحل",128],
+    ["017","الإسراء",111],["018","الكهف",110],["019","مريم",98],["020","طه",135],
+    ["021","الأنبياء",112],["022","الحج",78],["023","المؤمنون",118],["024","النور",64],
+    ["025","الفرقان",77],["026","الشعراء",227],["027","النمل",93],["028","القصص",88],
+    ["029","العنكبوت",69],["030","الروم",60],["031","لقمان",34],["032","السجدة",30],
+    ["033","الأحزاب",73],["034","سبأ",54],["035","فاطر",45],["036","يس",83],
+    ["037","الصافات",182],["038","ص",88],["039","الزمر",75],["040","غافر",85],
+    ["041","فصلت",54],["042","الشورى",53],["043","الزخرف",89],["044","الدخان",59],
+    ["045","الجاثية",37],["046","الأحقاف",35],["047","محمد",38],["048","الفتح",29],
+    ["049","الحجرات",18],["050","ق",45],["051","الذاريات",60],["052","الطور",49],
+    ["053","النجم",62],["054","القمر",55],["055","الرحمن",78],["056","الواقعة",96],
+    ["057","الحديد",29],["058","المجادلة",22],["059","الحشر",24],["060","الممتحنة",13],
+    ["061","الصف",14],["062","الجمعة",11],["063","المنافقون",11],["064","التغابن",18],
+    ["065","الطلاق",12],["066","التحريم",12],["067","الملك",30],["068","القلم",52],
+    ["069","الحاقة",52],["070","المعارج",44],["071","نوح",28],["072","الجن",28],
+    ["073","المزمل",20],["074","المدثر",56],["075","القيامة",40],["076","الإنسان",31],
+    ["077","المرسلات",50],["078","النبأ",40],["079","النازعات",46],["080","عبس",42],
+    ["081","التكوير",29],["082","الانفطار",19],["083","المطففين",36],["084","الانشقاق",25],
+    ["085","البروج",22],["086","الطارق",17],["087","الأعلى",19],["088","الغاشية",26],
+    ["089","الفجر",30],["090","البلد",20],["091","الشمس",15],["092","الليل",21],
+    ["093","الضحى",11],["094","الشرح",8],["095","التين",8],["096","العلق",19],
+    ["097","القدر",5],["098","البينة",8],["099","الزلزلة",8],["100","العاديات",11],
+    ["101","القارعة",11],["102","التكاثر",8],["103","العصر",3],["104","الهمزة",9],
+    ["105","الفيل",5],["106","قريش",4],["107","الماعون",7],["108","الكوثر",3],
+    ["109","الكافرون",6],["110","النصر",3],["111","المسد",5],["112","الإخلاص",4],
+    ["113","الفلق",5],["114","الناس",6]
+];
+
+const egyptContainer = document.getElementById("egypt-sheik");
+const saudiContainer = document.getElementById("saudi-sheik");
+const listEl = document.getElementById("list");
+const pageTitle = document.getElementById("page-title");
+const pageLead = document.getElementById("page-lead");
+const backBtn = document.getElementById("backBtn");
+const sheikSections = document.getElementById("sheik-sections");
+
+function renderSheiks(){
+    sheikData.egypt.forEach(s=>{
+        const div = document.createElement("div");
+        div.className="sheik";
+        div.dataset.sheik=s.id;
+        div.textContent=s.name;
+        div.addEventListener("click",()=>showSurahs(s.id,s.name));
+        egyptContainer.appendChild(div);
+    });
+    sheikData.saudi.forEach(s=>{
+        const div = document.createElement("div");
+        div.className="sheik";
+        div.dataset.sheik=s.id;
+        div.textContent=s.name;
+        div.addEventListener("click",()=>showSurahs(s.id,s.name));
+        saudiContainer.appendChild(div);
+    });
+}
+renderSheiks();
+
+function showSurahs(sheikId,sheikName){
+    sheikSections.style.display="none";
+    backBtn.style.display="inline-block";
+    pageTitle.textContent="القرآن الكريم — "+sheikName;
+    pageLead.textContent="اضغط على السورة لإظهار أو إخفاء شريط التشغيل.";
+
+    listEl.innerHTML="";
+
+    surahs.forEach((s,idx)=>{
+        const id=s[0], title=s[1], ayat=s[2];
+        const surahDiv=document.createElement("div");
+        surahDiv.className="surah";
+        surahDiv.dataset.audioId="audio-"+id;
+
+        const numSpan=document.createElement("div");
+        numSpan.className="num";
+        numSpan.textContent=(idx+1)+".";
+
+        const titleDiv=document.createElement("div");
+        titleDiv.className="title";
+        titleDiv.innerHTML=`<strong>سورة ${title}</strong> &nbsp; <span style="opacity:0.9">(${ayat} آية)</span>`;
+
+        surahDiv.appendChild(titleDiv);
+        surahDiv.appendChild(numSpan);
+
+        const audioEl=document.createElement("audio");
+        audioEl.id="audio-"+id;
+        audioEl.controls=true;
+        audioEl.style.display="none";
+        const source=document.createElement("source");
+        source.src=`https://server8.mp3quran.net/${sheikId}/${id}.mp3`;
+        source.type="audio/mpeg";
+        audioEl.appendChild(source);
+
+        listEl.appendChild(surahDiv);
+        listEl.appendChild(audioEl);
+
+        surahDiv.addEventListener("click",()=>{toggleAudio(audioEl.id)});
+    });
+}
+
+function toggleAudio(targetId){
+    const audios = document.querySelectorAll("audio");
+    const target = document.getElementById(targetId);
+    if(target.style.display==="block"){ target.pause(); target.style.display="none"; return; }
+    audios.forEach(a=>{ if(a.id!==targetId){ try{a.pause();a.currentTime=0;}catch(e){} a.style.display="none"; } });
+    target.style.display="block";
+}
+
+function goBack(){
+    sheikSections.style.display="block";
+    backBtn.style.display="none";
+    listEl.innerHTML="";
+    pageTitle.textContent="اختر القارئ للاستماع للقرآن الكريم";
+    pageLead.textContent="اضغط على اسم الشيخ للانتقال لقائمة السور.";
+}
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
 
 
 
